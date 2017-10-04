@@ -135,6 +135,55 @@ describe "ボウリングのスコア計算" do
     end
   end
 
+  describe "フレームごとの合計" do
+    context "全ての投球で１ピンずつ倒した場合" do
+      it "1フレーム目の合計が２になること" do
+        add_many_scores(20,1)
+        # total
+        @game.calc_score
+        expect(@game.frame_score(1)).to eq 2
+      end
+    end
+
+    context "スペアを取った場合" do
+      it "スペアボーナスが加算されること" do
+        # 1
+        @game.add_score(3)
+        @game.add_score(7)
+        # 2
+        @game.add_score(4)
+
+        # G
+        add_many_scores(17,0)
+
+        #total
+        @game.calc_score
+
+        # 3 + 7 + (4) = 14
+        expect(@game.frame_score(1)).to eq 14
+      end
+    end
+
+    context "ストライクを取った場合" do
+      it "ストライクボーナスが加算されること" do
+        @game.add_score(10)
+
+        @game.add_score(5)
+        @game.add_score(4)
+
+        add_many_scores(16,0)
+
+        # total
+        @game.calc_score
+
+        # 10 + (5) + (4) = 19
+        expect(@game.frame_score(1)).to eq 19
+
+      end
+    end
+
+  end
+
   private
     def add_many_scores(count,pins)
       count.times do

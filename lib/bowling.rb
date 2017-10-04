@@ -4,6 +4,8 @@ class Bowling
     @total_score = 0
     @scores =[]
     @temp =[]
+    # フレームごとの合計を格納する配列
+    @frame_score = []
   end
 
   def total_score
@@ -31,7 +33,13 @@ class Bowling
       else
         @total_score += score.inject(:+)
       end
+
+      @frame_score << @total_score
     end
+  end
+
+  def frame_score(frame)
+    @frame_score[frame - 1]
   end
 
   private
